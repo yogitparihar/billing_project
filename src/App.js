@@ -1,12 +1,10 @@
-import InvoiceForm from './components/InvoiceForm';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './Pages';
+
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="mx-auto max-w-7xl">
-        <InvoiceForm />
-      </div>
-    </div>
+   <RouterProvider router={router}/>
   );
 }
 
