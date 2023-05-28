@@ -40,3 +40,9 @@
     @apply font-Opensans;
   }
 }
+
+.span-class{
+  position: absolute;
+    top: 15px;
+    left: 22px;
+}
