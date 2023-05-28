@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import './login.css'; // Import the CSS file for styling
 import { useNavigate } from 'react-router-dom';
+import {ToastContainer, toast} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -19,8 +21,12 @@ export const Login = () => {
     const handleSubmit = (values, { setSubmitting }) => {
         // You can perform your login logic here
         console.log(values);
-        navigate('/bill')
-        setSubmitting(false);
+        if (values.email === "ranaparul1006@gmail.com" && values.password === "12345") {
+            navigate('/bill')
+            setSubmitting(false);
+        }else{
+            toast.error("Wrong email and password")
+        }
     };
 
     return (
@@ -54,6 +60,7 @@ export const Login = () => {
                     </Formik>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
     );
 };
