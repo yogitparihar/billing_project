@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,useRef} from 'react';
 import { uid } from 'uid';
 import InvoiceItem from './InvoiceItem';
 import InvoiceModal from './InvoiceModal';
 import incrementString from '../helpers/incrementString';
+import emailjs from '@emailjs/browser';
 const date = new Date();
 const today = date.toLocaleDateString('en-GB', {
   month: 'numeric',
@@ -17,6 +18,7 @@ const InvoiceForm = () => {
   const [invoiceNumber, setInvoiceNumber] = useState(1);
   const [cashierName, setCashierName] = useState('');
   const [customerName, setCustomerName] = useState('');
+  const [customerEmail, setCustomerEmail] = useState('');
   const [items, setItems] = useState([
     {
       id: uid(6),
@@ -25,9 +27,15 @@ const InvoiceForm = () => {
       price: '1.00',
     },
   ]);
-
+  const form = useRef()
   const reviewInvoiceHandler = (event) => {
     event.preventDefault();
+    emailjs.sendForm('service_soeb1uv', 'template_1xyz47m', form.current, 'QAl-_-tv6_JJa6Pwm')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
     setIsOpen(true);
   };
 
@@ -90,6 +98,7 @@ const InvoiceForm = () => {
 
   return (
     <form
+    ref={form}
       className="relative flex flex-col px-2 md:flex-row"
       onSubmit={reviewInvoiceHandler}
     >
@@ -149,6 +158,21 @@ const InvoiceForm = () => {
             id="customerName"
             value={customerName}
             onChange={(event) => setCustomerName(event.target.value)}
+          />
+        </div>
+        <div className="grid  pt-4 pb-8">
+          <label htmlFor="customerName" className="text-sm font-bold md:text-base">
+            Customer email address:
+          </label>
+          <input
+            required
+            className="flex-1"
+            placeholder="Customer email address"
+            type="email"
+            name="customerEmail"
+            id="customerEmail"
+            value={customerEmail}
+            onChange={(event) => setCustomerEmail(event.target.value)}
           />
         </div>
         <table className="w-full p-4 text-left">
@@ -221,6 +245,7 @@ const InvoiceForm = () => {
               invoiceNumber,
               cashierName,
               customerName,
+              customerEmail,
               subtotal,
               taxRate,
               discountRate,
